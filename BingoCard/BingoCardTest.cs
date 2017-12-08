@@ -156,7 +156,7 @@ namespace BingoCard
                 yield return ColumnWord + randomNumber[i];
             }
         }
-        public List<int> GenerateRandomNumber()
+        private List<int> GenerateRandomNumber()
         {
             var numberCount = EndNumber - StartNumber + 1;
             var randomMethod = new Random(Guid.NewGuid().GetHashCode());
