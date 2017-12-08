@@ -142,11 +142,11 @@ namespace BingoCard
     {
         private static readonly List<BingoColumnData> BingoColumnData = new List<BingoColumnData>()
         {
-            new BingoColumnData{ Word = "B", Number = 5, StartRange = 1, EndRange = 15},
-            new BingoColumnData{ Word = "I", Number = 5, StartRange = 16, EndRange = 30},
-            new BingoColumnData{ Word = "N", Number = 4, StartRange = 31, EndRange = 45},
-            new BingoColumnData{ Word = "G", Number = 5, StartRange = 46, EndRange = 60},
-            new BingoColumnData{ Word = "O", Number = 5, StartRange = 61, EndRange = 75}
+            new BingoColumnData{ ColumnWord = "B", CellCount = 5, StartNumber = 1, EndNumber = 15},
+            new BingoColumnData{ ColumnWord = "I", CellCount = 5, StartNumber = 16, EndNumber = 30},
+            new BingoColumnData{ ColumnWord = "N", CellCount = 4, StartNumber = 31, EndNumber = 45},
+            new BingoColumnData{ ColumnWord = "G", CellCount = 5, StartNumber = 46, EndNumber = 60},
+            new BingoColumnData{ ColumnWord = "O", CellCount = 5, StartNumber = 61, EndNumber = 75}
         };
         public static string[] GetCard()
         {
@@ -171,25 +171,27 @@ namespace BingoCard
 
     public class BingoColumnData
     {
-        public string Word { get; set; }
+        public string ColumnWord { get; set; }
 
-        public int Number { get; set; }
+        public int CellCount { get; set; }
 
-        public int StartRange { get; set; }
+        public int StartNumber { get; set; }
 
-        public int EndRange { get; set; }
+        public int EndNumber { get; set; }
 
         public IEnumerable<string> GenerateColumnData()
         {
-            var randomNumber = GenerateRandomNumber().ToList();
-            for (var i = 0; i < Number; i++)
+            var randomNumber = GenerateRandomNumber();
+            for (var i = 0; i < CellCount; i++)
             {
-                yield return Word + randomNumber[i];
+                yield return ColumnWord + randomNumber[i];
             }
         }
-        public IEnumerable<int> GenerateRandomNumber()
+        public List<int> GenerateRandomNumber()
         {
-            return Enumerable.Range(StartRange, EndRange).OrderBy(x => new Random().Next());
+            var numberCount = EndNumber - StartNumber + 1;
+            var randomMethod = new Random(Guid.NewGuid().GetHashCode());
+            return Enumerable.Range(StartNumber, numberCount).OrderBy(x => randomMethod.Next()).ToList();
         }
     }
 }
