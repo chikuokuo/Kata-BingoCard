@@ -19,41 +19,38 @@ namespace BingoCard
         [TestMethod]
         public void Card_Column_B_Have_5_Number()
         {
-            var bingoCard = BingoCard.GetCard();
-
-            Assert.AreEqual(5, bingoCard.Count(x => x.StartsWith("B")));
+            NumberColumnCountShouldMatch(5, "B");
         }
 
         [TestMethod]
         public void Card_Column_I_Have_5_Number()
         {
-            var bingoCard = BingoCard.GetCard();
-
-            Assert.AreEqual(5, bingoCard.Count(x => x.StartsWith("I")));
+            NumberColumnCountShouldMatch(5, "I");
         }
 
         [TestMethod]
         public void Card_Column_N_Have_4_Number()
         {
-            var bingoCard = BingoCard.GetCard();
-
-            Assert.AreEqual(4, bingoCard.Count(x => x.StartsWith("N")));
+            NumberColumnCountShouldMatch(4, "N");
         }
 
         [TestMethod]
         public void Card_Column_G_Have_5_Number()
         {
-            var bingoCard = BingoCard.GetCard();
-
-            Assert.AreEqual(5, bingoCard.Count(x => x.StartsWith("G")));
+            NumberColumnCountShouldMatch(5, "G");
         }
 
         [TestMethod]
         public void Card_Column_O_Have_5_Number()
         {
+            NumberColumnCountShouldMatch(5,"O");
+        }
+
+        private static void NumberColumnCountShouldMatch(int number, string word)
+        {
             var bingoCard = BingoCard.GetCard();
 
-            Assert.AreEqual(5, bingoCard.Count(x => x.StartsWith("O")));
+            Assert.AreEqual(number, bingoCard.Count(x => x.StartsWith(word)));
         }
 
         [TestMethod]
@@ -68,66 +65,38 @@ namespace BingoCard
         [TestMethod]
         public void Card_Column_Word_B_Number_Is_Between_1_15()
         {
-            var numbers = BingoCard.GetCard().Where(x => x.StartsWith("B")).ToList();
-
-            foreach (var number in numbers)
-            {
-                var n = Convert.ToInt32(number.Substring(1));
-                Assert.AreEqual(true, n <= 15);
-                Assert.AreEqual(true, n >= 0);
-            }
+            Assert.AreEqual(true, ColumnNumberRangeIsMatch("B", 1, 15));
         }
 
         [TestMethod]
         public void Card_Column_Word_I_Number_Is_Between_16_30()
         {
-            var numbers = BingoCard.GetCard().Where(x => x.StartsWith("I")).ToList();
-
-            foreach (var number in numbers)
-            {
-                var n = Convert.ToInt32(number.Substring(1));
-                Assert.AreEqual(true, n <= 30);
-                Assert.AreEqual(true, n >= 16);
-            }
+            Assert.AreEqual(true, ColumnNumberRangeIsMatch("I", 16, 30));
         }
 
         [TestMethod]
         public void Card_Column_Word_N_Number_Is_Between_31_45()
         {
-            var numbers = BingoCard.GetCard().Where(x => x.StartsWith("N")).ToList();
-
-            foreach (var number in numbers)
-            {
-                var n = Convert.ToInt32(number.Substring(1));
-                Assert.AreEqual(true, n <= 45);
-                Assert.AreEqual(true, n >= 31);
-            }
+            Assert.AreEqual(true, ColumnNumberRangeIsMatch("N", 31, 45));
         }
 
         [TestMethod]
         public void Card_Column_Word_G_Number_Is_Between_46_60()
         {
-            var numbers = BingoCard.GetCard().Where(x => x.StartsWith("G")).ToList();
-
-            foreach (var number in numbers)
-            {
-                var n = Convert.ToInt32(number.Substring(1));
-                Assert.AreEqual(true, n <= 60);
-                Assert.AreEqual(true, n >= 46);
-            }
+            Assert.AreEqual(true, ColumnNumberRangeIsMatch("G", 46, 60));
         }
 
         [TestMethod]
         public void Card_Column_Word_O_Number_Is_Between_61_75()
         {
-            var numbers = BingoCard.GetCard().Where(x => x.StartsWith("O")).ToList();
+            Assert.AreEqual(true, ColumnNumberRangeIsMatch("O", 61, 75));
+        }
 
-            foreach (var number in numbers)
-            {
-                var n = Convert.ToInt32(number.Substring(1));
-                Assert.AreEqual(true, n <= 75);
-                Assert.AreEqual(true, n >= 61);
-            }
+        private bool ColumnNumberRangeIsMatch(string word, int startNumber, int endNumber)
+        {
+            var numbers = BingoCard.GetCard().Where(x => x.StartsWith(word)).ToList();
+
+            return numbers.Select(x => Convert.ToInt32(x.Substring(1))).All(n => n >= startNumber && n <= endNumber);
         }
 
         [TestMethod]
